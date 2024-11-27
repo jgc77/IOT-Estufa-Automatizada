@@ -28,6 +28,22 @@ Este repositório contém o **1º Projeto de Sistemas Embarcados** focado no des
 - **Botão Esquerdo**: Confirma a seleção ou retorna ao menu anterior.
 - **Botão Direito**: Navega para a direita no menu ou retorna à opção anterior.
 
+## Portas Utilizadas
+- **D04**: DHT11  
+- **D13**: LED UV  
+- **D18**: Motor 1  
+- **D19**: Motor 2  
+- **D21**: Display (I2C - SDA)  
+- **D22**: Display (I2C - SCL)  
+- **D23**: PWM  
+- **D25**: Relé  
+- **D26**: LED Power  
+- **D27**: PWM Servo  
+- **D32**: Botão 2 (B2)  
+- **D33**: Botão 1 (B1)  
+- **D34**: Umidade do Solo (Sensor Analógico)  
+- **D36**: LDR (Sensor de Luminosidade - Analógico)  
+
 ## Links:
 - https://github.com/jgc77/Estufa-Automatizada
 - https://www.tinkercad.com/things/kj5nUbN28iH-estufa-automatizada?sharecode=ryG8-UEUu79qbrlhKUh0y8Mcmv00TgAfoeZEw4P74pI
