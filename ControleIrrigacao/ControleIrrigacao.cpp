@@ -1,8 +1,8 @@
 #include "Arduino.h"
 #include "ControleIrrigacao.h"
-#include "Servo.h"
+#include "ESP32Servo.h"
 
-//Função inicial
+
 ControleIrrigacao::ControleIrrigacao(int pino_sens, int iservo) {
 
   _pino_sens = pino_sens;
@@ -13,13 +13,11 @@ ControleIrrigacao::ControleIrrigacao(int pino_sens, int iservo) {
   pinMode(iservo, OUTPUT);
 }
 
-//Função para iniciar o servo
 void ControleIrrigacao::iniciar() {
   servo_motor.attach(_iservo); // Inicia o servo
   servo_motor.write(0);
 }
 
-//Função para definir o modo manual e automatico, além de controlar o servo no modo manual
 void ControleIrrigacao::ajustarModo(String comando_serial) {
   comando_serial.trim(); // Remove espaços em branco ou novas linhas
   if (comando_serial == "automatico") {
@@ -27,6 +25,7 @@ void ControleIrrigacao::ajustarModo(String comando_serial) {
   } 
   else if (comando_serial == "manual") {
     _modo = 1;
+    Serial.println("Controle a irrigação com 'servo on' e 'servo off'");
   }
   else if (_modo == 1) {
      if (comando_serial == "servo on") {
@@ -40,13 +39,9 @@ void ControleIrrigacao::ajustarModo(String comando_serial) {
   }
 }
 
-//Função para controlar o servo no modo automatico
 void ControleIrrigacao::atualizar() {
   if (_modo == 0) {
     int valorumidade = analogRead(_pino_sens); // Lê o sensor (0 a 1023)
-    //Remover comentario para testes:
-    //Serial.print("Valor do sensor de umidade: ");
-    //Serial.println(valorumidade);
     if (valorumidade > 511) {
       servo_motor.write(90);
     } else {
@@ -55,12 +50,11 @@ void ControleIrrigacao::atualizar() {
   }
 }
 
-//Função para leitura do sensor para variavel umidadeAtual
 int ControleIrrigacao::lersolo() {
   if (millis() - ultimoTempoAtualizacao >= intervaloAtualizacao) {
     ultimoTempoAtualizacao = millis();
     int leituraAnalogica = analogRead(_pino_sens); // Atualiza a leitura
-    umidadeAtual = map(leituraAnalogica, 1023, 0, 0, 100); // Converte para porcentagem
+    umidadeAtual = map(leituraAnalogica, 4095, 0, 0, 100); // Converte para porcentagem
   }
   return umidadeAtual; // Retorna o valor em porcentagem
 }

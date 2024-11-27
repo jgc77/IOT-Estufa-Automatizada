@@ -4,19 +4,19 @@
 #include <MenuLCD.h>
 
 // Definir os pinos dos botões
-const uint8_t botao1 = 2;
-const uint8_t botao2 = 3;
+const uint8_t botao1 = 32;
+const uint8_t botao2 = 33;
 
 // Definir os pinos do LDR e LED
-const int led_uv = 6;
-const int ldr = A0;
+const int led_uv = 13;
+const int ldr = 36;
 
 // Definir os pinos de temperatura
 const int dht11 = 4;
-const uint8_t motor1 = 9;
-const uint8_t motor2 = 7;
-const int motor_pwm = 10;
-const int rele = 8;
+const uint8_t motor1 = 18;
+const uint8_t motor2 =19;
+const int motor_pwm = 23;
+const int rele = 25;
 
 //Definir tempo do led power 
 unsigned long previousMillis = 0; 
@@ -26,14 +26,14 @@ const long interval = 300; // Intervalo de piscar (ms)
 MenuLCD menu(0x27, 16, 2, botao1, botao2);               // Menu para o LCD 16x2
 ControleLuminosidade controleLuminosidade(led_uv, ldr);  // Controle de luminosidade
 ControleTemperatura controle(dht11, motor1, motor2, motor_pwm, rele);     // Controle de Temperatura
-ControleIrrigacao controleIrrigacao(A1, 11);
+ControleIrrigacao controleIrrigacao(34, 27);
 
 void setup() {
   // Iniciar os módulos de menu e controle serial
   menu.iniciar();
   controleIrrigacao.iniciar();
   Serial.begin(9600);
-  pinMode(5, OUTPUT);  //LED de Power
+  pinMode(26, OUTPUT);  //LED de Power
   Serial.println("ESTUFA AUTOMATIZADA");
   Serial.println("Bem vindo, escolha entre o modo manual e automatico.");
 }
@@ -43,7 +43,7 @@ void loop() {
   //LED power
   if (millis() - previousMillis >= interval) {
     previousMillis = millis();
-    digitalWrite(5, !digitalRead(5)); // Alterna o estado do LED
+    digitalWrite(26, !digitalRead(26)); // Alterna o estado do LED
   }
 
   if (Serial.available() > 0) {

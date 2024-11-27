@@ -2,7 +2,7 @@
 #define ControleIrrigacao_h
 
 #include "Arduino.h"
-#include "Servo.h"
+#include "ESP32Servo.h"
 
 class ControleIrrigacao {
   public:

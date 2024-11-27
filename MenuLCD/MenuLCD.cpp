@@ -92,7 +92,7 @@ byte SIMB8[8] = {
 };
 /////////////////////////////////////////////////////
 
-//Função inicial
+
 MenuLCD::MenuLCD(uint8_t lcd_addr, uint8_t lcd_cols, uint8_t lcd_rows, uint8_t btn1_pin, uint8_t btn2_pin)
   : lcd(lcd_addr, lcd_cols, lcd_rows), botao_1(btn1_pin), botao_2(btn2_pin) {
   menu_atual = 4;
@@ -108,9 +108,9 @@ MenuLCD::MenuLCD(uint8_t lcd_addr, uint8_t lcd_cols, uint8_t lcd_rows, uint8_t b
 // Função para iniciar o LCD e definir botões
 void MenuLCD::iniciar() {
   lcd.init();  // Iniciar o LCD
-  lcd.backlight();  
-  pinMode(botao_1, INPUT_PULLUP);  
-  pinMode(botao_2, INPUT_PULLUP);  
+  lcd.backlight();  // Ligar o backlight
+  pinMode(botao_1, INPUT_PULLUP);  // Configurar botão 1 como entrada com pull-up
+  pinMode(botao_2, INPUT_PULLUP);  // Configurar botão 2 como entrada com pull-up
 
 //Alocando cada matrix como um símbolo 
   lcd.createChar(1, SIMB1);
@@ -125,7 +125,6 @@ void MenuLCD::iniciar() {
   mostrarMenu();
 }
 
-//Função de navegação entre os menus
 void MenuLCD::atualizar() {
   int estado_botao_1 = digitalRead(botao_1);
   int estado_botao_2 = digitalRead(botao_2);
@@ -159,7 +158,6 @@ void MenuLCD::atualizar() {
   estado_anterior_botao_2 = estado_botao_2;
 }
 
-//Função para atualizar valor da luminosidade
 void MenuLCD::atualizarLuminosidade() {
   if (dentro_submenu && menu_atual == 2) {  // Se estamos no submenu de luminosidade
     lcd.setCursor(0, 1);  // Mover o cursor para a linha 2
@@ -170,7 +168,6 @@ void MenuLCD::atualizarLuminosidade() {
   }
 }
 
-//Função para atualizar valor da temperatura
 void MenuLCD::atualizarTemperatura() {
   if (dentro_submenu && menu_atual == 0) {  // Se estamos no submenu de temperatura
     lcd.setCursor(0, 1);  // Mover o cursor para a linha 2
@@ -182,7 +179,6 @@ void MenuLCD::atualizarTemperatura() {
   }
 }
 
-//Função para atualizar valor da umidade
 void MenuLCD::atualizarUmidade() {
   if (dentro_submenu && menu_atual == 1) {  // Se estamos no submenu de umidade
     lcd.setCursor(0, 1);  // Mover o cursor para a linha 2
@@ -193,7 +189,6 @@ void MenuLCD::atualizarUmidade() {
   }
 }
 
-//Função para atualizar valor da umidade do solo
 void MenuLCD::atualizarUmisolo() {
   if (dentro_submenu && menu_atual == 3) {  // Se estamos no submenu de umidade
     lcd.setCursor(0, 1);  // Mover o cursor para a linha 2
@@ -204,7 +199,6 @@ void MenuLCD::atualizarUmisolo() {
   }
 }
 
-//Funções para declarar variaveis
 void MenuLCD::setTemperatura(int temp) {
   temperatura = temp;
 }
@@ -220,9 +214,7 @@ void MenuLCD::setLuminosidade(int lumi) {
 void MenuLCD::setUmisolo(int umidso) {
   umisolo = umidso;
 }
-////////////////
 
-//Fuunção para criar menus e logomarca
 void MenuLCD::mostrarMenu() {
   lcd.clear();
   lcd.setCursor(0, 0);
@@ -259,7 +251,6 @@ void MenuLCD::mostrarMenu() {
   }
 }
 
-//Função para criar submenus e imprimir valores do sensor
 void MenuLCD::mostrarSubmenu() {
   lcd.clear();
   lcd.setCursor(0, 0);

@@ -1,7 +1,6 @@
 #include "Arduino.h"
 #include "ControleLuminosidade.h"
 
-//Função inicial
 ControleLuminosidade::ControleLuminosidade(int pino_led, int pino_ldr) {
   _pino_led = pino_led;
   _pino_ldr = pino_ldr;
@@ -10,15 +9,15 @@ ControleLuminosidade::ControleLuminosidade(int pino_led, int pino_ldr) {
   pinMode(_pino_led, OUTPUT);
 }
 
-//Função para definir o modo manual e automatico, além de controlar o led no modo manual
 void ControleLuminosidade::ajustarModo(String comando_serial) {
-  comando_serial.trim(); 
+  comando_serial.trim(); // Remove espaços em branco ou novas linhas
   if (comando_serial == "automatico") {
     _modo = 0;
+    //Serial.println("Modo automatico ativado.");
   } 
   else if (comando_serial == "manual") {
     _modo = 1;
-    Serial.println("Ajuste a luminosidade com valores de 0 a 100. Exemplo: 'led 33'.");
+    Serial.println("Controle a luminosidade com valores de 0 a 100. Exemplo: 'led 33'.");
   }
   else if (_modo == 1 && comando_serial.startsWith("led")) {
     int porcentagem = comando_serial.substring(4).toInt(); // Extrai o valor após 'led '
@@ -33,7 +32,6 @@ void ControleLuminosidade::ajustarModo(String comando_serial) {
   }
 }
 
-//Função para controlar o led no modo automatico
 void ControleLuminosidade::atualizar() {
   if (_modo == 0) {
     int valor_ldr = analogRead(_pino_ldr); // Lê o LDR (0 a 1023)
@@ -46,7 +44,6 @@ void ControleLuminosidade::atualizar() {
   }
 }
 
-//Função para leitura do sensor LDR
 int ControleLuminosidade::lerLDR() {
   return analogRead(_pino_ldr); // Retorna o valor do LDR
 }
