@@ -98,7 +98,7 @@ void loop() {
   menu.atualizarUmidade();
   menu.atualizarUmisolo();
 
-  mqttPub.publicar(modo, temperatura, umidade, luminosidade);
+  mqttPub.publicar(modo, temperatura, umidade, luminosidade, umisolo);
 
   // delay para aliviar o loop
   delay(100);
