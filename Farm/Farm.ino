@@ -19,6 +19,8 @@ const uint8_t motor2 = 19;
 const int motor_pwm = 23;
 const int rele = 25;
 
+int modo = 0;
+
 const char* ssid = "PISCINA ";              // Nome do ponto de acesso
 const char* password = "38473144";          // Senha do ponto de acesso
 const char* mqtt_server = "192.168.30.19";  // Usando um broker público como exemplo
@@ -59,9 +61,11 @@ void loop() {
     String comando = Serial.readStringUntil('\n');
     if (comando == "automatico") {
       Serial.println("Modo automatico ativado.");
+      modo = 0;
 
     } else if (comando == "manual") {
       Serial.println("Modo manual ativado");
+      modo = 1;
     }
 
     controleLuminosidade.ajustarModo(comando);  //luminosidade
@@ -77,7 +81,7 @@ void loop() {
   int temperatura = controle.lerTemp();
   int umidade = controle.lerUmi();
   int umisolo = controleIrrigacao.lersolo();
-  float tensao = random(400, 501) / 100.0;  // 4.00 a 5.00 V
+  //float tensao = random(400, 501) / 100.0;  // 4.00 a 5.00 V
 
   // Atualizar o valor dos sensores na biblioteca de menu
   menu.setLuminosidade(luminosidade);
@@ -94,7 +98,7 @@ void loop() {
   menu.atualizarUmidade();
   menu.atualizarUmisolo();
 
-  mqttPub.publicar(tensao, temperatura, umidade, luminosidade);
+  mqttPub.publicar(modo, temperatura, umidade, luminosidade);
 
   // delay para aliviar o loop
   delay(100);
