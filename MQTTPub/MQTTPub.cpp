@@ -44,7 +44,7 @@ void MQTTPub::iniciar() {
   Serial.println("\nHora sincronizada.");
 }
 
-void MQTTPub::publicar(float tensao, float temperatura, int umidade, int luminosidade) {
+void MQTTPub::publicar(int modo, float temperatura, int umidade, int luminosidade, int umisolo) {
   unsigned long currentMillis = millis();
 
   // Verifica se já passou o tempo de intervalo
@@ -66,10 +66,11 @@ void MQTTPub::publicar(float tensao, float temperatura, int umidade, int luminos
     char datetime[30];
     strftime(datetime, sizeof(datetime), "%Y-%m-%d %H:%M:%S", timeinfo);
     doc["datetime"] = datetime;
-    doc["tensao"] = tensao;
+    doc["modo"] = modo;
     doc["temperatura"] = temperatura;
     doc["umidade"] = umidade;
     doc["luminosidade"] = luminosidade;
+    doc["umisolo"] = umisolo;
 
     // Serializar JSON
     char jsonBuffer[512];
