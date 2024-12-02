@@ -2,6 +2,7 @@
 #include <ControleTemperatura.h>
 #include <ControleLuminosidade.h>
 #include <MenuLCD.h>
+#include <MQTTPub.h>
 
 // Definir os pinos dos botões
 const uint8_t botao1 = 32;
@@ -14,22 +15,30 @@ const int ldr = 36;
 // Definir os pinos de temperatura
 const int dht11 = 4;
 const uint8_t motor1 = 18;
-const uint8_t motor2 =19;
+const uint8_t motor2 = 19;
 const int motor_pwm = 23;
 const int rele = 25;
 
-//Definir tempo do led power 
-unsigned long previousMillis = 0; 
-const long interval = 300; // Intervalo de piscar (ms)
+const char* ssid = "PISCINA ";              // Nome do ponto de acesso
+const char* password = "38473144";          // Senha do ponto de acesso
+const char* mqtt_server = "192.168.30.19";  // Usando um broker público como exemplo
+const int mqtt_port = 1885;                 // Porta padrão MQTT
+const char* mqtt_topic = "dados";
+
+//Definir tempo do led power
+unsigned long previousMillis = 0;
+const long interval = 300;  // Intervalo de piscar (ms)
 
 // Criar instâncias das bibliotecas
-MenuLCD menu(0x27, 16, 2, botao1, botao2);               // Menu para o LCD 16x2
-ControleLuminosidade controleLuminosidade(led_uv, ldr);  // Controle de luminosidade
-ControleTemperatura controle(dht11, motor1, motor2, motor_pwm, rele);     // Controle de Temperatura
+MenuLCD menu(0x27, 16, 2, botao1, botao2);                             // Menu para o LCD 16x2
+ControleLuminosidade controleLuminosidade(led_uv, ldr);                // Controle de luminosidade
+ControleTemperatura controle(dht11, motor1, motor2, motor_pwm, rele);  // Controle de Temperatura
 ControleIrrigacao controleIrrigacao(34, 27);
+MQTTPub mqttPub(ssid, password, mqtt_server, mqtt_port, mqtt_topic);
 
 void setup() {
   // Iniciar os módulos de menu e controle serial
+  mqttPub.iniciar();
   menu.iniciar();
   controleIrrigacao.iniciar();
   Serial.begin(9600);
@@ -43,7 +52,7 @@ void loop() {
   //LED power
   if (millis() - previousMillis >= interval) {
     previousMillis = millis();
-    digitalWrite(26, !digitalRead(26)); // Alterna o estado do LED
+    digitalWrite(26, !digitalRead(26));  // Alterna o estado do LED
   }
 
   if (Serial.available() > 0) {
@@ -68,6 +77,7 @@ void loop() {
   int temperatura = controle.lerTemp();
   int umidade = controle.lerUmi();
   int umisolo = controleIrrigacao.lersolo();
+  float tensao = random(400, 501) / 100.0;  // 4.00 a 5.00 V
 
   // Atualizar o valor dos sensores na biblioteca de menu
   menu.setLuminosidade(luminosidade);
@@ -83,6 +93,8 @@ void loop() {
   menu.atualizarTemperatura();
   menu.atualizarUmidade();
   menu.atualizarUmisolo();
+
+  mqttPub.publicar(tensao, temperatura, umidade, luminosidade);
 
   // delay para aliviar o loop
   delay(100);
