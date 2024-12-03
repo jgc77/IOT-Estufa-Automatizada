@@ -14,6 +14,7 @@ ControleTemperatura::ControleTemperatura(int pino_dht, int pino_saida1, int pino
   _manual_motor = LOW;
   _pwm_atual = 0;
   _estado_motor = LOW;
+  _estado_rele = LOW;
   _dht = new DHT(_pino_dht, DHTTYPE);
   _dht->begin();  // Inicializa o sensor DHT
   
@@ -45,9 +46,11 @@ void ControleTemperatura::ajustarModo(String comando_serial) {
     } else if (comando_serial == "umi on") {
       digitalWrite(_pino_rele, LOW); // Liga o relé
       Serial.println("Umidificador ligado manualmente.");
+      _estado_rele = true;
     } else if (comando_serial == "umi off") {
       digitalWrite(_pino_rele, HIGH); // desliga o relé
       Serial.println("Umidificador desligado manualmente.");
+      _estado_rele = false;
     }
   }
 }
@@ -82,8 +85,10 @@ void ControleTemperatura::atualizar() {
 
     if (umidade < 50) {
       digitalWrite(_pino_rele, LOW); // Liga o relé
+      _estado_rele = true;
     } else {
       digitalWrite(_pino_rele, HIGH); // Desliga o relé
+      _estado_rele = false;
     }
 
     if (temperatura > 50) {
@@ -122,4 +127,8 @@ int ControleTemperatura::lerUmi() {
 
 String ControleTemperatura::EstadoMotor() {
     return _estado_motor ? "HIGH" : "LOW";
+}
+
+String ControleTemperatura::EstadoRele() {
+    return _estado_rele ? "HIGH" : "LOW";
 }

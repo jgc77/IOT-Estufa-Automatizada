@@ -44,7 +44,7 @@ void MQTTPub::iniciar() {
   Serial.println("\nHora sincronizada.");
 }
 
-void MQTTPub::publicar(int modo, float temperatura, int umidade, int luminosidade, int umisolo, int valorled, String estado_motor) {
+void MQTTPub::publicar(int modo, float temperatura, int umidade, int luminosidade, int umisolo, int valor_led, String estado_motor, String estado_rele) {
   unsigned long currentMillis = millis();
 
   // Verifica se já passou o tempo de intervalo
@@ -71,8 +71,9 @@ void MQTTPub::publicar(int modo, float temperatura, int umidade, int luminosidad
     doc["umidade"] = umidade;
     doc["luminosidade"] = luminosidade;
     doc["umisolo"] = umisolo;
-    doc["valorled"] = valorled;
+    doc["valor_led"] = valor_led;
     doc["estado_motor"] = estado_motor;
+    doc["estado_rele"] = estado_rele;
    
 
     // Serializar JSON
@@ -83,8 +84,8 @@ void MQTTPub::publicar(int modo, float temperatura, int umidade, int luminosidad
     mqttClient.publish(_mqtt_topic, jsonBuffer);
 
     // Exibir no Serial Monitor
-    Serial.println("Dados publicados:");
-    Serial.println(jsonBuffer);
+    //Serial.println("Dados publicados:");
+    //Serial.println(jsonBuffer);
 
     // Atualiza o tempo da última publicação
     lastPublishTime = currentMillis;
