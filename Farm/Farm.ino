@@ -82,6 +82,7 @@ void loop() {
   int umidade = controle.lerUmi();
   int umisolo = controleIrrigacao.lersolo();
   int valorled = controleLuminosidade.lerLED();
+  String estado_motor = controle.EstadoMotor();
   //float tensao = random(400, 501) / 100.0;  // 4.00 a 5.00 V
 
   // Atualizar o valor dos sensores na biblioteca de menu
@@ -99,7 +100,7 @@ void loop() {
   menu.atualizarUmidade();
   menu.atualizarUmisolo();
 
-  mqttPub.publicar(modo, temperatura, umidade, luminosidade, umisolo, valorled);
+  mqttPub.publicar(modo, temperatura, umidade, luminosidade, umisolo, valorled, estado_motor);
 
   // delay para aliviar o loop
   delay(100);

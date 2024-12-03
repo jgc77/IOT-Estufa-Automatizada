@@ -12,6 +12,7 @@ class ControleTemperatura {
     int lerTemp();  // Função para retornar a leitura da temp
     int lerUmi();
     void ligarMotor();
+    String EstadoMotor();
   private:
     int _pino_dht;
     uint8_t _pino_saida1;
@@ -21,6 +22,7 @@ class ControleTemperatura {
     int _pino_rele;
     int _modo;  // 0 = Automático, 1 = Manual
     int _manual_motor;  // Estado manual do motor
+    bool _estado_motor;
     DHT* _dht;
 };
 

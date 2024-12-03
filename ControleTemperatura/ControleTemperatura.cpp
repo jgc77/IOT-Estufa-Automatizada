@@ -13,6 +13,7 @@ ControleTemperatura::ControleTemperatura(int pino_dht, int pino_saida1, int pino
   _modo = 0;
   _manual_motor = LOW;
   _pwm_atual = 0;
+  _estado_motor = LOW;
   _dht = new DHT(_pino_dht, DHTTYPE);
   _dht->begin();  // Inicializa o sensor DHT
   
@@ -58,6 +59,7 @@ void ControleTemperatura::ligarMotor() {
   // Pino 6 low e pino 7 high ligam o motor
   digitalWrite(_pino_saida1, LOW);
   digitalWrite(_pino_saida2, HIGH);
+  _estado_motor = true; // atualiza variavel do motor para o banco de dados
 
   // Rampa de aceleração (aumenta o PWM de 0 a 255)
   for (int pwmValor = _pwm_atual; pwmValor <= 255; pwmValor += 5) {
@@ -92,6 +94,7 @@ void ControleTemperatura::atualizar() {
       digitalWrite(_pino_saida2, LOW);  // Desliga a saída 2
       analogWrite(_pino_pwm, 0);
       _pwm_atual = 0; //redefine o a variavel do pwm para zero, possibilitando iniciar a rampa novamente
+      _estado_motor = false; // atualiza variavel do motor para o banco de dados
     }
   } else if (_modo == 1) {
     if (_manual_motor == HIGH) {
@@ -101,6 +104,7 @@ void ControleTemperatura::atualizar() {
       digitalWrite(_pino_saida1, LOW);   // Desliga a saída 1
       digitalWrite(_pino_saida2, LOW);   // Desliga a saída 2
       analogWrite(_pino_pwm, 0);
+      _estado_motor = false; // atualiza variavel do motor para o banco de dados
       _pwm_atual = 0; //redefine o a variavel do pwm para zero, possibilitando iniciar a rampa novamente
     }
   }
@@ -114,4 +118,8 @@ int ControleTemperatura::lerTemp() {
 int ControleTemperatura::lerUmi() {
   float umidade = _dht->readHumidity(); // Lê a temperatura em Celsius
   return umidade; // Retorna o valor da temperatura
+}
+
+String ControleTemperatura::EstadoMotor() {
+    return _estado_motor ? "HIGH" : "LOW";
 }
