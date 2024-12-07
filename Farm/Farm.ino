@@ -21,10 +21,13 @@ const int rele = 25;
 
 int modo = 0;
 
-const char* ssid = "PISCINA ";              // Nome do ponto de acesso
+//const char* ssid = "Xiaomi 11 Lite 5G";
+const char* ssid = "PISCINA ";  // Nome do ponto de acesso
+//const char* password = "joaojoao123";
 const char* password = "38473144";          // Senha do ponto de acesso
 const char* mqtt_server = "192.168.30.19";  // Usando um broker público como exemplo
-const int mqtt_port = 1885;                 // Porta padrão MQTT
+//const char* mqtt_server = "192.168.86.150";  // Usando um broker público como exemplo
+const int mqtt_port = 1885;  // Porta padrão MQTT
 const char* mqtt_topic = "dados";
 
 //Definir tempo do led power
@@ -84,6 +87,7 @@ void loop() {
   int valor_led = controleLuminosidade.lerLED();
   String estado_motor = controle.EstadoMotor();
   String estado_rele = controle.EstadoRele();
+  String estado_servo = controleIrrigacao.EstadoServo();
   //float tensao = random(400, 501) / 100.0;  // 4.00 a 5.00 V
 
   // Atualizar o valor dos sensores na biblioteca de menu
@@ -101,7 +105,7 @@ void loop() {
   menu.atualizarUmidade();
   menu.atualizarUmisolo();
 
-  mqttPub.publicar(modo, temperatura, umidade, luminosidade, umisolo, valor_led, estado_motor, estado_rele);
+  mqttPub.publicar(modo, temperatura, umidade, luminosidade, umisolo, valor_led, estado_motor, estado_rele, estado_servo);
 
   // delay para aliviar o loop
   delay(100);

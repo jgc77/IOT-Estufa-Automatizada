@@ -11,6 +11,7 @@ ControleIrrigacao::ControleIrrigacao(int pino_sens, int iservo) {
   ultimoTempoAtualizacao = 0; // Inicializa a última atualização
   umidadeAtual = 0; // Valor inicial da umidade
   pinMode(iservo, OUTPUT);
+  _estado_servo = LOW;
 }
 
 void ControleIrrigacao::iniciar() {
@@ -31,21 +32,25 @@ void ControleIrrigacao::ajustarModo(String comando_serial) {
      if (comando_serial == "servo on") {
        servo_motor.write(90);
        Serial.println("Servo ligado manualmente.");
+       _estado_servo = true;
 
       } else if (comando_serial == "servo off") {
         servo_motor.write(0);
         Serial.println("Servo desligado manualmente.");
+        _estado_servo = false;
       }
   }
 }
 
 void ControleIrrigacao::atualizar() {
   if (_modo == 0) {
-    int valorumidade = analogRead(_pino_sens); // Lê o sensor (0 a 1023)
-    if (valorumidade > 511) {
+    int valorumidade = analogRead(_pino_sens); // Lê o sensor (0 a 4095)
+    if (valorumidade > 2047) {
       servo_motor.write(90);
+      _estado_servo = true;
     } else {
       servo_motor.write(0);
+      _estado_servo = false;
     }
   }
 }
@@ -57,4 +62,8 @@ int ControleIrrigacao::lersolo() {
     umidadeAtual = map(leituraAnalogica, 4095, 0, 0, 100); // Converte para porcentagem
   }
   return umidadeAtual; // Retorna o valor em porcentagem
+}
+
+String ControleIrrigacao::EstadoServo() {
+    return _estado_servo? "HIGH" : "LOW";
 }

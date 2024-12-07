@@ -10,12 +10,14 @@ class ControleIrrigacao {
     void ajustarModo(String comando_serial);
     void atualizar();
     void iniciar();
-    int lersolo();  // Função para retornar a leitura do LDR
+    int lersolo();  
+    String EstadoServo();
   private:
     //int _pino_servo;
     int _pino_sens;
     int _modo; // 0 = Automático, 1 = Manual
     int _iservo;
+    bool _estado_servo;
     //int _valor_servo_manual;
     Servo servo_motor;
     //int umidade_limite; 

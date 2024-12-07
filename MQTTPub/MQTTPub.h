@@ -10,7 +10,7 @@ class MQTTPub {
   public:
     MQTTPub(const char* ssid, const char* password, const char* mqtt_server, int mqtt_port, const char* mqtt_topic);
     void iniciar();
-    void publicar(int modo, float temperatura, int umidade, int luminosidade, int umisolo, int valor_led, String estado_motor, String estado_rele);
+    void publicar(int modo, float temperatura, int umidade, int luminosidade, int umisolo, int valor_led, String estado_motor, String estado_rele, String estado_servo);
   
   private:
     const char* _ssid;
