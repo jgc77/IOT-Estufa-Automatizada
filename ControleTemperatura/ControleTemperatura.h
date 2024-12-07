@@ -3,6 +3,7 @@
 
 #include "Arduino.h"
 #include "DHT.h"
+#include "BluetoothSerial.h"
 
 class ControleTemperatura {
   public:
