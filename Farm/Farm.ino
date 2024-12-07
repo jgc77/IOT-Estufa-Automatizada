@@ -3,6 +3,7 @@
 #include <ControleLuminosidade.h>
 #include <MenuLCD.h>
 #include <MQTTPub.h>
+#include "BluetoothSerial.h"
 
 // Definir os pinos dos botões
 const uint8_t botao1 = 32;
@@ -39,15 +40,19 @@ MenuLCD menu(0x27, 16, 2, botao1, botao2);                             // Menu p
 ControleLuminosidade controleLuminosidade(led_uv, ldr);                // Controle de luminosidade
 ControleTemperatura controle(dht11, motor1, motor2, motor_pwm, rele);  // Controle de Temperatura
 ControleIrrigacao controleIrrigacao(34, 27);
-MQTTPub mqttPub(ssid, password, mqtt_server, mqtt_port, mqtt_topic);
+MQTTPub mqttPub(ssid, password, mqtt_server, mqtt_port, mqtt_topic);  //wifi e envio de dados mqtt
+
+// Bluetooth Serial
+BluetoothSerial SerialBT;
 
 void setup() {
   // Iniciar os módulos de menu e controle serial
   mqttPub.iniciar();
   menu.iniciar();
   controleIrrigacao.iniciar();
-  Serial.begin(9600);
-  pinMode(26, OUTPUT);  //LED de Power
+  Serial.begin(115200);
+  pinMode(26, OUTPUT);                    //LED de Power
+  SerialBT.begin("Estufa Automatizada");  // Nome do dispositivo Bluetooth
   Serial.println("ESTUFA AUTOMATIZADA");
   Serial.println("Bem vindo, escolha entre o modo manual e automatico.");
 }
@@ -60,19 +65,29 @@ void loop() {
     digitalWrite(26, !digitalRead(26));  // Alterna o estado do LED
   }
 
-  if (Serial.available() > 0) {
-    String comando = Serial.readStringUntil('\n');
+  // Ler dados do Serial ou do Bluetooth
+  if (Serial.available() > 0 || SerialBT.available() > 0) {
+    String comando;
+    if (Serial.available() > 0) {
+      comando = Serial.readStringUntil('\n');
+    } else if (SerialBT.available() > 0) {
+      comando = SerialBT.readStringUntil('\n');
+    }
+
+    // Processar comando
     if (comando == "automatico") {
       Serial.println("Modo automatico ativado.");
+      SerialBT.println("Modo automatico ativado.");
       modo = 0;
-
     } else if (comando == "manual") {
       Serial.println("Modo manual ativado");
+      SerialBT.println("Modo manual ativado");
       modo = 1;
     }
 
-    controleLuminosidade.ajustarModo(comando);  //luminosidade
-    controle.ajustarModo(comando);              //temperatura
+    // Ajustar modos
+    controleLuminosidade.ajustarModo(comando);
+    controle.ajustarModo(comando);
     controleIrrigacao.ajustarModo(comando);
   }
   controleLuminosidade.atualizar();
