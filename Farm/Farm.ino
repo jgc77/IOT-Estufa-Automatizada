@@ -20,7 +20,7 @@ const uint8_t motor2 = 19;
 const int motor_pwm = 23;
 const int rele = 25;
 
-int modo = 0;
+int mod = 0;
 
 //const char* ssid = "Xiaomi 11 Lite 5G";
 const char* ssid = "PISCINA ";  // Nome do ponto de acesso
@@ -82,16 +82,16 @@ void loop() {
     // Processar comando
     if (comando == "automatico") {
       Serial.println("Modo automatico ativado.");
-      modo = 0;
+      mod = 0;
     } else if (comando == "manual") {
       Serial.println("Modo manual ativado.");
-      modo = 1;
+      mod = 1;
     }
 
     // Exibir o modo no Serial Bluetooth
-    if (modo == 0) {
+    if (mod == 0) {
       SerialBT.println("Modo automatico ativado.");
-    } else if (modo == 1) {
+    } else if (mod == 1) {
       SerialBT.println("Modo manual ativado.");
     }
 
@@ -130,6 +130,7 @@ void loop() {
   menu.atualizarUmidade();
   menu.atualizarUmisolo();
 
+  String modo = (mod == 1) ? "Manual" : "Automático";
   mqttPub.publicar(modo, temperatura, umidade, luminosidade, umisolo, valor_led, estado_motor, estado_rele, estado_servo);
 
   // delay para aliviar o loop

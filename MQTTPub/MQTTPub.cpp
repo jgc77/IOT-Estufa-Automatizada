@@ -46,7 +46,7 @@ void MQTTPub::sincronizarRelogio() {
   }
 }
 
-void MQTTPub::publicar(int modo, float temperatura, int umidade, int luminosidade, int umisolo, int valor_led, String estado_motor, String estado_rele, String estado_servo) {
+void MQTTPub::publicar(String modo, float temperatura, int umidade, int luminosidade, int umisolo, int valor_led, String estado_motor, String estado_rele, String estado_servo) {
   unsigned long currentMillis = millis();
 
   // Verifica o intervalo

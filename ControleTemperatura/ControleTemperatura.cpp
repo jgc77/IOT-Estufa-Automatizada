@@ -136,9 +136,9 @@ int ControleTemperatura::lerUmi() {
 }
 
 String ControleTemperatura::EstadoMotor() {
-    return _estado_motor ? "HIGH" : "LOW";
+    return _estado_motor ? "Ligado" : "Desligado";
 }
 
 String ControleTemperatura::EstadoRele() {
-    return _estado_rele ? "HIGH" : "LOW";
+    return _estado_rele ? "Ligado" : "Desligado";
 }

@@ -71,5 +71,5 @@ int ControleIrrigacao::lersolo() {
 }
 
 String ControleIrrigacao::EstadoServo() {
-    return _estado_servo? "HIGH" : "LOW";
+    return _estado_servo? "Ligado" : "Desligado";
 }
