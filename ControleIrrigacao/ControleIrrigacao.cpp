@@ -1,7 +1,9 @@
 #include "Arduino.h"
 #include "ControleIrrigacao.h"
 #include "ESP32Servo.h"
+#include "BluetoothSerial.h"
 
+extern BluetoothSerial SerialBT;  //inicia BLE pelo farm.io
 
 ControleIrrigacao::ControleIrrigacao(int pino_sens, int iservo) {
 
@@ -27,16 +29,20 @@ void ControleIrrigacao::ajustarModo(String comando_serial) {
   else if (comando_serial == "manual") {
     _modo = 1;
     Serial.println("Controle a irrigação com 'servo on' e 'servo off'");
+    SerialBT.println("Controle a irrigação com 'servo on' e 'servo off'");
+
   }
   else if (_modo == 1) {
      if (comando_serial == "servo on") {
        servo_motor.write(90);
        Serial.println("Servo ligado manualmente.");
+       SerialBT.println("Servo ligado manualmente.");
        _estado_servo = true;
 
       } else if (comando_serial == "servo off") {
         servo_motor.write(0);
         Serial.println("Servo desligado manualmente.");
+        SerialBT.println("Servo desligado manualmente.");
         _estado_servo = false;
       }
   }

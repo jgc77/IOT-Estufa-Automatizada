@@ -54,7 +54,9 @@ void setup() {
   pinMode(26, OUTPUT);                    //LED de Power
   SerialBT.begin("Estufa Automatizada");  // Nome do dispositivo Bluetooth
   Serial.println("ESTUFA AUTOMATIZADA");
+  SerialBT.println("ESTUFA AUTOMATIZADA");
   Serial.println("Bem vindo, escolha entre o modo manual e automatico.");
+  SerialBT.println("Bem vindo, escolha entre o modo manual e automatico.");
 }
 
 void loop() {
@@ -74,15 +76,23 @@ void loop() {
       comando = SerialBT.readStringUntil('\n');
     }
 
+    // Remover espaços e caracteres invisíveis
+    comando.trim();  // Remove espaços em branco no início/fim e caracteres como \r\n
+
     // Processar comando
     if (comando == "automatico") {
       Serial.println("Modo automatico ativado.");
-      SerialBT.println("Modo automatico ativado.");
       modo = 0;
     } else if (comando == "manual") {
-      Serial.println("Modo manual ativado");
-      SerialBT.println("Modo manual ativado");
+      Serial.println("Modo manual ativado.");
       modo = 1;
+    }
+
+    // Exibir o modo no Serial Bluetooth
+    if (modo == 0) {
+      SerialBT.println("Modo automatico ativado.");
+    } else if (modo == 1) {
+      SerialBT.println("Modo manual ativado.");
     }
 
     // Ajustar modos

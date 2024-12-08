@@ -1,5 +1,8 @@
 #include "Arduino.h"
 #include "ControleLuminosidade.h"
+#include "BluetoothSerial.h"
+
+extern BluetoothSerial SerialBT;  //inicia BLE pelo farm.io
 
 ControleLuminosidade::ControleLuminosidade(int pino_led, int pino_ldr) {
   _pino_led = pino_led;
@@ -18,6 +21,8 @@ void ControleLuminosidade::ajustarModo(String comando_serial) {
   else if (comando_serial == "manual") {
     _modo = 1;
     Serial.println("Controle a luminosidade com valores de 0 a 100. Exemplo: 'led 33'.");
+    SerialBT.println("Controle a luminosidade com valores de 0 a 100. Exemplo: 'led 33'.");
+
   }
   else if (_modo == 1 && comando_serial.startsWith("led")) {
     int porcentagem = comando_serial.substring(4).toInt(); // Extrai o valor após 'led '
@@ -26,9 +31,12 @@ void ControleLuminosidade::ajustarModo(String comando_serial) {
       analogWrite(_pino_led, _valor_led_manual);
       _potencia = porcentagem; //Variavel para o banco de dados
       Serial.print("Luminosidade manual ajustada para: ");
+      SerialBT.print("Luminosidade manual ajustada para: ");
       Serial.println(porcentagem);
+      SerialBT.println(porcentagem);
     } else {
       Serial.println("Valor invalido! Use entre 0 e 100.");
+      SerialBT.println("Valor invalido! Use entre 0 e 100.");
     }
   }
 }

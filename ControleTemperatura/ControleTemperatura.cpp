@@ -5,7 +5,7 @@
 
 #define DHTTYPE DHT11  // Definindo o tipo de sensor DHT11
 
-extern BluetoothSerial SerialBT;  // Apenas faz referência à variável definida em Farm.ino
+extern BluetoothSerial SerialBT;  //inicia BLE pelo farm.io
 
 ControleTemperatura::ControleTemperatura(int pino_dht, int pino_saida1, int pino_saida2, int pino_pwm, int pino_rele) {
   _pino_dht = pino_dht;
