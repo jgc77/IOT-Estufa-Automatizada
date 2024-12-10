@@ -22,12 +22,9 @@ const int rele = 25;
 
 int mod = 0;
 
-//const char* ssid = "Xiaomi 11 Lite 5G";
-const char* ssid = "PISCINA ";  // Nome do ponto de acesso
-//const char* password = "joaojoao123";
-const char* password = "38473144";          // Senha do ponto de acesso
-const char* mqtt_server = "192.168.30.19";  // Usando um broker público como exemplo
-//const char* mqtt_server = "192.168.86.150";  // Usando um broker público como exemplo
+const char* ssid = "wifi";
+const char* password = "senha";
+const char* mqtt_server = "ip";
 const int mqtt_port = 1885;  // Porta padrão MQTT
 const char* mqtt_topic = "dados";
 
