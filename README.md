@@ -1,6 +1,6 @@
 # Estufa Automatizada
 
-Este repositório contém o **1º Projeto de Sistemas Embarcados** focado no desenvolvimento de uma estufa automatizada usando a plataforma Arduino. O sistema monitora e controla variáveis críticas para o cultivo, como temperatura, umidade, luminosidade e irrigação, promovendo um ambiente otimizado para o crescimento das plantas.
+Este repositório contém a 2ª Parte do Projeto de Sistemas Embarcados, expandindo a funcionalidade da estufa automatizada com o uso do ESP32 para envio de dados, integração com Node-RED e armazenamento em um banco de dados PostgreSQL. A visualização das informações em tempo real é feita via Metabase e o controle do sistema pode ser realizado através de comandos enviados por Bluetooth.
 
 ## Estrutura do Repositório
 
@@ -9,13 +9,15 @@ Este repositório contém o **1º Projeto de Sistemas Embarcados** focado no des
 - **ControleLuminosidade**: Biblioteca para controle da intensidade da iluminação via PWM.
 - **ControleTemperatura**: Biblioteca para monitoramento e controle da temperatura e umidade do ar.
 - **ControleIrrigacao**: Biblioteca para controle da umidade do solo, acionando um servo motor.
+- **MQTTPub**: Biblioteca para conexão WI-FI e envio de dados MQTT.
 
 ## Instruções de Instalação
 
-1. Copie as pastas **MenuLCD**, **ControleLuminosidade**, **ControleTemperatura** e **ControleIrrigacao** para a pasta **libraries** do Arduino.
+1. Copie as pastas **MenuLCD**, **ControleLuminosidade**, **ControleTemperatura**, **ControleIrrigacao** e **MQTTPub** para a pasta **libraries** do Arduino.
 2. Carregue o código principal na pasta **Farm** para o Arduino.
+3. Edite o Farm.ino com seus dados de wifi, senha e ip.
 
-## Instruções de Utilização modo manual (via Serial)
+## Instruções de Utilização modo manual (via Serial e Serial Bluetooth)
 
 - **Modos de Operação**: Escolha entre modo **manual** e **automático**.
 - **Luminosidade**: Controle a intensidade do LED com o comando `led` seguido da porcentagem desejada. Exemplo: `led 65`.
